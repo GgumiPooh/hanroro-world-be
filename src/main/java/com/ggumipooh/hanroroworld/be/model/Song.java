@@ -6,21 +6,22 @@ import org.hibernate.type.SqlTypes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "songs")
 public class Song extends BaseEntity {
 
-    @Column(columnDefinition = "json")
+    @Column
     @JdbcTypeCode(SqlTypes.JSON)
-    private String title;
+    private List<Map<String, String>> title;
 
-    @Column(columnDefinition = "json")
+    @Column
     @JdbcTypeCode(SqlTypes.JSON)
-    private String lyrics;
+    private LanguageData lyrics;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "album")
+    @JoinColumn(name = "album_id")
     private Album album;
 
     @OneToMany(mappedBy = "song", cascade = CascadeType.ALL, orphanRemoval = true)

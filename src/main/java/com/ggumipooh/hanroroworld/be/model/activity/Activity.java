@@ -1,36 +1,41 @@
 package com.ggumipooh.hanroroworld.be.model.activity;
 
 import com.ggumipooh.hanroroworld.be.model.BaseEntity;
+import com.ggumipooh.hanroroworld.be.model.LanguageData;
+import com.ggumipooh.hanroroworld.be.model.Metadata;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 @Entity
+@Setter
+@Getter
 public class Activity extends BaseEntity {
 
-    @Column
+    @Column(unique = true)
     @JdbcTypeCode(SqlTypes.JSON)
-    private String title;
+    private List<LanguageData> title;
 
     @Column
     @JdbcTypeCode(SqlTypes.JSON)
-    private String description;
+    private LanguageData description;
 
     @Column
     @Enumerated(EnumType.STRING)
     private ActivityType type;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "meta_datas", columnDefinition = "json")
-    private List<Map<String, String>> metadata;
+    @Column
+    private List<Metadata> metaData;
 
     @Column
-    private Instant active_from;
+    private Instant activeFrom;
 
     @Column
-    private Instant active_to;
+    private Instant activeTo;
 }

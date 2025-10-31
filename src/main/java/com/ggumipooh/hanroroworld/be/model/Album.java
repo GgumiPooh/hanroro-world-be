@@ -16,12 +16,19 @@ public class Album extends BaseEntity {
 
     @Column
     @JdbcTypeCode(SqlTypes.JSON)
-    private String title;
+    private List<LanguageData> title;
 
     @Column
-    private Instant published_at;
+    private Instant publishedAt;
 
-    @OneToMany(mappedBy = "song_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column
+    private List<LanguageData> description;
+
+    @Column
+    @JdbcTypeCode(SqlTypes.JSON)
+    private List<Metadata> metadata;
+
+    @OneToMany(mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Song> songs = new ArrayList<>();
 }
 
