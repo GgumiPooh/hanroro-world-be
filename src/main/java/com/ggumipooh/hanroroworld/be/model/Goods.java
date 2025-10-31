@@ -6,7 +6,6 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.util.List;
-import java.util.Map;
 
 @Entity
 public class Goods extends BaseEntity {
@@ -16,5 +15,5 @@ public class Goods extends BaseEntity {
 
     @Column
     @JdbcTypeCode(SqlTypes.JSON)
-    private List<Map<String, String>> metadata;
+    private List<Metadata> metadata;
 }
