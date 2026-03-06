@@ -12,14 +12,15 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/public/song")
+@RequestMapping("/api/public/album")
 public class SongController {
 
     private final CommentService commentService;
 
-    @PostMapping("/{songId}/comment")
+    @PostMapping("/{albumId}/song/{trackNumber}/comment")
     public Object createComment(
-            @PathVariable Long songId,
+            @PathVariable Long albumId,
+            @PathVariable Integer trackNumber,
             @RequestBody CommentRequest request,
             HttpServletResponse response) {
         Long userId = SecurityUtil.getCurrentUserId();
@@ -29,16 +30,16 @@ public class SongController {
         }
 
         try {
-            return commentService.createComment(songId, userId, request.getContent());
+            return commentService.createCommentByAlbumAndTrackNumber(albumId, trackNumber, userId, request.getContent());
         } catch (Exception ex) {
             response.setStatus(500);
             return "failed_to_save_comment";
         }
     }
 
-    @GetMapping("/{songId}/comments")
-    public List<CommentDto> getComments(@PathVariable Long songId) {
-        return commentService.getCommentsBySong(songId);
+    @GetMapping("/{albumId}/song/{trackNumber}/comments")
+    public List<CommentDto> getComments(@PathVariable Long albumId, @PathVariable Integer trackNumber) {
+        return commentService.getCommentsByAlbumAndTrackNumber(albumId, trackNumber);
     }
 
     @DeleteMapping("/comment/{commentId}")

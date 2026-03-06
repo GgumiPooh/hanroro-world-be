@@ -40,9 +40,41 @@ public class CommentService {
                 return toDto(saved);
         }
 
+        @Transactional
+        public CommentDto createCommentByAlbumAndTrackNumber(Long albumId, Integer trackNumber, Long userId, String content) {
+                Song song = songRepository.findByAlbumIdAndTrackNumber(albumId, trackNumber);
+                if (song == null) {
+                        throw new IllegalArgumentException("Song not found with albumId: " + albumId + ", trackNumber: " + trackNumber);
+                }
+                User user = userRepository.findById(userId)
+                                .orElseThrow(() -> new IllegalArgumentException("User not found: " + userId));
+
+                CommentSong comment = CommentSong.builder()
+                                .content(content)
+                                .song(song)
+                                .user(user)
+                                .build();
+
+                CommentSong saved = commentSongRepository.save(comment);
+
+                return toDto(saved);
+        }
+
         @Transactional(readOnly = true)
         public List<CommentDto> getCommentsBySong(Long songId) {
                 return commentSongRepository.findBySongIdOrderByCommentedAtDesc(songId)
+                                .stream()
+                                .map(this::toDto)
+                                .collect(Collectors.toList());
+        }
+
+        @Transactional(readOnly = true)
+        public List<CommentDto> getCommentsByAlbumAndTrackNumber(Long albumId, Integer trackNumber) {
+                Song song = songRepository.findByAlbumIdAndTrackNumber(albumId, trackNumber);
+                if (song == null) {
+                        return List.of();
+                }
+                return commentSongRepository.findBySongIdOrderByCommentedAtDesc(song.getId())
                                 .stream()
                                 .map(this::toDto)
                                 .collect(Collectors.toList());

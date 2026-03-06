@@ -8,7 +8,6 @@ import java.util.List;
 import com.ggumipooh.hanroroworld.be.dto.AlbumDto;
 import com.ggumipooh.hanroroworld.be.dto.SongDto;
 import com.ggumipooh.hanroroworld.be.dto.mapper.AlbumMapper;
-import com.ggumipooh.hanroroworld.be.dto.mapper.SongMapper;
 import com.ggumipooh.hanroroworld.be.service.AlbumService;
 import com.ggumipooh.hanroroworld.be.service.SongService;
 
@@ -31,9 +30,9 @@ public class AlbumController {
         return songService.getSongsByAlbum(albumId);
     }
 
-    @GetMapping("/song/{songId}")
-    public SongDto getSong(@PathVariable Long songId) {
-        return songService.getById(songId);
+    @GetMapping("/{albumId}/song/{trackNumber}")
+    public SongDto getSong(@PathVariable Long albumId, @PathVariable Integer trackNumber) {
+        return songService.getSongByAlbumIdAndTrackNumber(albumId, trackNumber);
     }
 
 }

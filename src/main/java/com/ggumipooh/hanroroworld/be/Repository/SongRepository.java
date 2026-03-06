@@ -8,4 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SongRepository extends JpaRepository<Song, Long> {
     List<Song> findByAlbumId(Long albumId);
+
+    Song findByTrackNumber(Integer trackNumber);
+
+    Song findByAlbumIdAndTrackNumber(Long albumId, Integer trackNumber);
 }

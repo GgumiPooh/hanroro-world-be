@@ -26,4 +26,12 @@ public class SongService {
     public List<SongDto> getSongsByAlbum(Long albumId) {
         return songRepository.findByAlbumId(albumId).stream().map(SongMapper::toDto).toList();
     }
+
+    public SongDto getSongByTrackNumber(Integer trackNumber) {
+        return SongMapper.toDto(songRepository.findByTrackNumber(trackNumber));
+    }
+
+    public SongDto getSongByAlbumIdAndTrackNumber(Long albumId, Integer trackNumber) {
+        return SongMapper.toDto(songRepository.findByAlbumIdAndTrackNumber(albumId, trackNumber));
+    }
 }
